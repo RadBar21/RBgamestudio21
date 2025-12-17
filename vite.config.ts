@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react';
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, '.', '');
     return {
-      base: '/RBgamestudio21/', 
+      base: '/', // Zde byla změna: vracíme zpět na '/'
       server: {
         port: 3000,
         host: '0.0.0.0',

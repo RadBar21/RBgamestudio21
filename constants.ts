@@ -27,7 +27,7 @@ export const GAMES: Game[] = [
       cs: 'Hra, která se inspiruje klasickým hadem. Plňte denní výzvy a denní řady. Získávejte ocenění a nové barvy a skiny pro vylepšení herního zážitku.',
       en: 'A game inspired by the classic snake. Complete daily challenges and streaks. Earn achievements and new colors and skins to enhance your gaming experience.'
     },
-    imageUrl: '/RBgamestudio21/image/BlueSnake.png',
+    imageUrl: '/image/BlueSnake.png', // Změna: čistá cesta
     googlePlayUrl: '#',
     appStoreUrl: '#',
     genre: { cs: 'Arcade', en: 'Arcade' },
@@ -40,7 +40,7 @@ export const GAMES: Game[] = [
       cs: 'Trénujte svou paměť, hrajte sami nebo s kamarádem. Plňte denní výzvy a získávejte ocenění za svou hru.',
       en: 'Train your memory, play alone or with a friend. Complete daily challenges and earn achievements for your gameplay.'
     },
-    imageUrl: '/RBgamestudio21/image/MemoryGame.png',
+    imageUrl: '/image/MemoryGame.png', // Změna: čistá cesta
     googlePlayUrl: '#',
     appStoreUrl: '#',
     genre: { cs: 'Puzzle', en: 'Puzzle' },
@@ -53,7 +53,7 @@ export const GAMES: Game[] = [
       cs: 'Komplexní 2D strategická vesmírná hra. Vyberte si z mnoha civilizací a ovládněte galaxii. Propracovaný systém těžby, kolonizace, získávání zkušeností a vylepšování jednotek.',
       en: 'A complex 2D strategic space game. Choose from many civilizations and dominate the galaxy. Elaborate system of mining, colonization, gaining experience, and upgrading units.'
     },
-    imageUrl: '/RBgamestudio21/image/SpaceColony.png',
+    imageUrl: '/image/SpaceColony.png', // Změna: čistá cesta
     googlePlayUrl: '#',
     appStoreUrl: '#',
     genre: { cs: 'Strategy', en: 'Strategy' },

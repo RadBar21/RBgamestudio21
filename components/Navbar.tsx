@@ -29,7 +29,7 @@ const Navbar: React.FC = () => {
           <div className="flex items-center">
             <NavLink to="/" className="flex-shrink-0 flex items-center gap-3">
               <img
-                src="/RBgamestudio21/image/RBgamestudio.png"
+                src="/image/RBgamestudio.png" // Změna: čistá cesta
                 alt="RB Game Studio 21 Logo"
                 className="h-10 w-auto object-contain" 
               />
@@ -39,7 +39,7 @@ const Navbar: React.FC = () => {
             </NavLink>
           </div>
 
-          {/* Desktop Menu */}
+          {/* Zbytek komponenty je stejný... */}
           <div className="hidden md:flex items-center">
             <div className="flex items-center space-x-8">
               {NAV_ITEMS.map((item) => (
@@ -49,7 +49,6 @@ const Navbar: React.FC = () => {
               ))}
             </div>
 
-            {/* Desktop Language Switcher */}
             <div className="flex items-center gap-2 border-l border-slate-200 pl-6 ml-8">
               <button
                 onClick={() => setLanguage('cs')}
@@ -71,9 +70,7 @@ const Navbar: React.FC = () => {
             </div>
           </div>
 
-          {/* Mobile menu controls */}
           <div className="flex items-center md:hidden gap-4">
-            {/* Mobile Language Switcher */}
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setLanguage('cs')}
@@ -107,7 +104,6 @@ const Navbar: React.FC = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
       {isOpen && (
         <div className="md:hidden bg-white border-t border-slate-100">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
