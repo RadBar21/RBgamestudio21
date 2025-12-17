@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Menu, X } from 'lucide-react'; // Odebrán Gamepad2, již není potřeba
+import { Menu, X } from 'lucide-react';
 import { NAV_ITEMS } from '../constants';
 import { useLanguage } from '../LanguageContext';
 
@@ -28,9 +28,8 @@ const Navbar: React.FC = () => {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <NavLink to="/" className="flex-shrink-0 flex items-center gap-3">
-              {/* LOGO IMAGE ZDE */}
               <img
-                src="/image/RBgamestudio.png"
+                src="/RBgamestudio21/image/RBgamestudio.png"
                 alt="RB Game Studio 21 Logo"
                 className="h-10 w-auto object-contain" 
               />
