@@ -106,12 +106,18 @@ const Contact: React.FC = () => {
               </div>
             </div>
 
-            {/* Collaboration Card - Změněno na modrou */}
-            <div className="bg-blue-600 rounded-2xl shadow-lg p-8 text-white">
-              <h3 className="text-xl font-bold mb-4">{t.contact.cardCollabTitle}</h3>
-              <p className="text-blue-100 leading-relaxed">
-                {t.contact.cardCollabDesc}
-              </p>
+            {/* Collaboration Card - Upraveno: přidány dekorativní prvky */}
+            <div className="bg-blue-600 rounded-2xl shadow-lg p-8 text-white relative overflow-hidden">
+              {/* Dekorativní kruhy na pozadí */}
+              <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -mr-16 -mt-16"></div>
+              <div className="absolute bottom-0 left-0 w-48 h-48 bg-white opacity-5 rounded-full -ml-12 -mb-12"></div>
+              
+              <div className="relative z-10">
+                <h3 className="text-xl font-bold mb-4">{t.contact.cardCollabTitle}</h3>
+                <p className="text-blue-100 leading-relaxed">
+                  {t.contact.cardCollabDesc}
+                </p>
+              </div>
             </div>
           </div>
 
@@ -124,7 +130,6 @@ const Contact: React.FC = () => {
             
             {status === 'success' ? (
               <div className="flex flex-col items-center justify-center py-12 text-center animate-fade-in">
-                {/* Změněno na modrou ikonu */}
                 <div className="h-16 w-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-4">
                   <CheckCircle className="h-8 w-8" />
                 </div>

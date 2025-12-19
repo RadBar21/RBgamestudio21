@@ -101,7 +101,8 @@ const Portfolio: React.FC = () => {
                     <button 
                       // @ts-ignore
                       onClick={(e) => handleWebClick(e, game.webUrl)}
-                      className="w-full flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 px-3 rounded-lg font-medium transition-colors text-xs sm:text-sm cursor-pointer shadow-md mb-1"
+                      // Změna barvy na bg-blue-600
+                      className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-2.5 px-3 rounded-lg font-medium transition-colors text-xs sm:text-sm cursor-pointer shadow-md mb-1"
                     >
                       <Globe size={16} />
                       {t.portfolio.btnPlayWeb}

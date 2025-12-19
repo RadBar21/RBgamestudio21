@@ -75,52 +75,53 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* NOVÁ SEKCE: Tester Banner */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-slate-50 border border-slate-200 rounded-3xl p-8 md:p-10 flex flex-col md:flex-row items-center gap-8 shadow-sm">
-          {/* Ikona */}
-          <div className="flex-shrink-0 bg-white p-4 rounded-full shadow-sm">
-            <Beaker size={48} className="text-blue-600" />
-          </div>
+      {/* Spojená sekce se dvěma bannery */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+        {/* Grid zajišťující vedle sebe rozložení na PC a stejnou velikost */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           
-          {/* Text */}
-          <div className="flex-1 text-center md:text-left">
-            <h2 className="text-2xl font-bold text-slate-900 mb-3">
-              {t.home.testerTitle}
-            </h2>
-            <p className="text-slate-600 text-lg leading-relaxed mb-6 md:mb-0 max-w-2xl">
-              {t.home.testerDesc}
-            </p>
+          {/* 1. Banner: Tester (Nový styl - modrý, konzistentní) */}
+          <div className="bg-blue-600 rounded-3xl p-8 md:p-10 text-center md:text-left text-white relative overflow-hidden flex flex-col justify-between items-center md:items-start gap-6 shadow-lg shadow-blue-600/20">
+            {/* Kruhy na pozadí pro konzistenci */}
+            <div className="absolute top-0 left-0 w-48 h-48 bg-white opacity-5 rounded-full -ml-12 -mt-12"></div>
+            <div className="relative z-10 flex flex-col items-center md:items-start gap-4">
+              <Beaker size={40} className="text-blue-100" />
+              <h2 className="text-2xl font-bold">{t.home.testerTitle}</h2>
+              <p className="text-blue-100 leading-relaxed text-lg">
+                {t.home.testerDesc}
+              </p>
+            </div>
+            <div className="relative z-10 mt-4 w-full md:w-auto">
+              <Link
+                to="/contact"
+                className="inline-flex items-center justify-center w-full md:w-auto gap-2 bg-white text-blue-600 px-6 py-3 rounded-full font-bold hover:bg-blue-50 transition-all shadow-md hover:shadow-lg transform active:scale-[0.98]"
+              >
+                {t.home.testerBtn} <ArrowRight size={20} />
+              </Link>
+            </div>
           </div>
 
-          {/* Tlačítko */}
-          <div className="flex-shrink-0">
-            <Link
-              to="/contact"
-              className="inline-flex items-center justify-center px-6 py-3 border border-slate-300 shadow-sm text-base font-medium rounded-full text-slate-700 bg-white hover:bg-slate-50 transition-all hover:shadow-md"
-            >
-              {t.home.testerBtn}
-            </Link>
+          {/* 2. Banner: CTA (Původní "Ready to Play" styl) */}
+          <div className="bg-blue-600 rounded-3xl p-8 md:p-10 text-center text-white relative overflow-hidden flex flex-col justify-between shadow-lg shadow-blue-600/20">
+            {/* Kruhy na pozadí pro konzistenci */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -mr-16 -mt-16"></div>
+            <div className="relative z-10">
+              <Smartphone size={40} className="text-blue-100 mx-auto mb-4" />
+              <h2 className="text-2xl font-bold mb-4">{t.home.ctaBottomTitle}</h2>
+              <p className="text-blue-100 leading-relaxed text-lg mb-8 mx-auto">
+                {t.home.ctaBottomDesc}
+              </p>
+            </div>
+            <div className="relative z-10 mt-auto w-full md:w-auto">
+              <Link
+                to="/portfolio"
+                className="inline-flex items-center justify-center w-full md:w-auto gap-2 bg-white text-blue-600 px-6 py-3 rounded-full font-bold hover:bg-blue-50 transition-all shadow-md hover:shadow-lg transform active:scale-[0.98]"
+              >
+                {t.home.ctaBottomLink} <ArrowRight size={20} />
+              </Link>
+            </div>
           </div>
-        </div>
-      </section>
 
-      {/* CTA Section */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
-        <div className="bg-blue-600 rounded-3xl p-8 md:p-12 text-center text-white relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -mr-16 -mt-16"></div>
-          <div className="relative z-10">
-            <h2 className="text-3xl font-bold mb-4">{t.home.ctaBottomTitle}</h2>
-            <p className="text-blue-100 mb-8 max-w-2xl mx-auto">
-              {t.home.ctaBottomDesc}
-            </p>
-            <Link
-              to="/portfolio"
-              className="inline-flex items-center gap-2 bg-white text-blue-600 px-6 py-3 rounded-full font-bold hover:bg-blue-50 transition-colors"
-            >
-              {t.home.ctaBottomLink} <ArrowRight size={20} />
-            </Link>
-          </div>
         </div>
       </section>
     </div>
