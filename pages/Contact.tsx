@@ -12,13 +12,13 @@ const Contact: React.FC = () => {
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setStatus("submitting");
-    setResult("Odesílám...");
+    setResult(""); // Vyčistíme předchozí výsledky
     
     const formData = new FormData(event.currentTarget);
 
-    // --- ZDE VLOŽ SVŮJ ACCESS KEY Z EMAILU ---
+    // --- ZDE JE TVŮJ ACCESS KEY ---
     formData.append("access_key", "39bf4491-8123-463b-b7f3-18f12673907e"); 
-    // -----------------------------------------
+    // -----------------------------
 
     try {
       const response = await fetch("https://api.web3forms.com/submit", {
@@ -29,7 +29,6 @@ const Contact: React.FC = () => {
       const data = await response.json();
 
       if (data.success) {
-        setResult("Zpráva byla úspěšně odeslána!");
         setStatus("success");
         (event.target as HTMLFormElement).reset();
       } else {
@@ -39,7 +38,6 @@ const Contact: React.FC = () => {
       }
     } catch (error) {
       console.error("Error", error);
-      setResult("Něco se pokazilo. Zkuste to prosím později.");
       setStatus("error");
     }
   };
@@ -60,7 +58,7 @@ const Contact: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           
-          {/* Levý sloupec: Kontaktní informace (Původní) */}
+          {/* Levý sloupec: Kontaktní informace */}
           <div className="space-y-8">
             {/* Contact Info Card */}
             <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
@@ -108,34 +106,35 @@ const Contact: React.FC = () => {
               </div>
             </div>
 
-            {/* Collaboration Card */}
-            <div className="bg-slate-900 rounded-2xl shadow-lg p-8 text-white">
+            {/* Collaboration Card - Změněno na modrou */}
+            <div className="bg-blue-600 rounded-2xl shadow-lg p-8 text-white">
               <h3 className="text-xl font-bold mb-4">{t.contact.cardCollabTitle}</h3>
-              <p className="text-slate-300 leading-relaxed">
+              <p className="text-blue-100 leading-relaxed">
                 {t.contact.cardCollabDesc}
               </p>
             </div>
           </div>
 
-          {/* Pravý sloupec: Kontaktní formulář (Nový) */}
+          {/* Pravý sloupec: Kontaktní formulář */}
           <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
             <h3 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
               <MessageSquare className="h-5 w-5 text-blue-600" />
-              Napište mi zprávu
+              {t.contact.formTitle}
             </h3>
             
             {status === 'success' ? (
               <div className="flex flex-col items-center justify-center py-12 text-center animate-fade-in">
-                <div className="h-16 w-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-4">
+                {/* Změněno na modrou ikonu */}
+                <div className="h-16 w-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-4">
                   <CheckCircle className="h-8 w-8" />
                 </div>
-                <h4 className="text-2xl font-bold text-slate-900 mb-2">Odesláno!</h4>
-                <p className="text-slate-500 max-w-xs">Děkuji za vaši zprávu. Odpovím vám co nejdříve na uvedený email.</p>
+                <h4 className="text-2xl font-bold text-slate-900 mb-2">{t.contact.successTitle}</h4>
+                <p className="text-slate-500 max-w-xs">{t.contact.successMessage}</p>
                 <button 
                   onClick={() => setStatus('idle')}
                   className="mt-6 text-blue-600 hover:text-blue-800 font-medium text-sm"
                 >
-                  Poslat další zprávu
+                  {t.contact.btnSendNew}
                 </button>
               </div>
             ) : (
@@ -145,42 +144,42 @@ const Contact: React.FC = () => {
 
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-1">
-                    Vaše jméno
+                    {t.contact.formName}
                   </label>
                   <input 
                     type="text" 
                     name="name" 
                     id="name"
                     required 
-                    placeholder="Jan Novák"
+                    placeholder={t.contact.placeholderName}
                     className="w-full rounded-lg border-slate-200 border px-4 py-2.5 text-slate-900 focus:border-blue-500 focus:ring-blue-500 focus:outline-none transition-all"
                   />
                 </div>
 
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1">
-                    Váš email
+                    {t.contact.formEmail}
                   </label>
                   <input 
                     type="email" 
                     name="email" 
                     id="email"
                     required 
-                    placeholder="jan@email.cz"
+                    placeholder={t.contact.placeholderEmail}
                     className="w-full rounded-lg border-slate-200 border px-4 py-2.5 text-slate-900 focus:border-blue-500 focus:ring-blue-500 focus:outline-none transition-all"
                   />
                 </div>
 
                 <div>
                   <label htmlFor="message" className="block text-sm font-medium text-slate-700 mb-1">
-                    Zpráva
+                    {t.contact.formMessage}
                   </label>
                   <textarea 
                     name="message" 
                     id="message"
                     required 
                     rows={4}
-                    placeholder="Mám nápad na vylepšení..."
+                    placeholder={t.contact.placeholderMessage}
                     className="w-full rounded-lg border-slate-200 border px-4 py-2.5 text-slate-900 focus:border-blue-500 focus:ring-blue-500 focus:outline-none transition-all resize-none"
                   ></textarea>
                 </div>
@@ -188,7 +187,7 @@ const Contact: React.FC = () => {
                 {status === 'error' && (
                   <div className="flex items-center gap-2 text-red-600 bg-red-50 p-3 rounded-lg text-sm">
                     <AlertCircle size={16} />
-                    {result}
+                    {t.contact.errorMessage} {result && `(${result})`}
                   </div>
                 )}
 
@@ -199,11 +198,11 @@ const Contact: React.FC = () => {
                 >
                   {status === 'submitting' ? (
                     <>
-                      <Loader2 className="animate-spin h-5 w-5" /> Odesílám...
+                      <Loader2 className="animate-spin h-5 w-5" /> {t.contact.btnSubmitting}
                     </>
                   ) : (
                     <>
-                      <Send size={18} /> Odeslat zprávu
+                      <Send size={18} /> {t.contact.btnSubmit}
                     </>
                   )}
                 </button>
