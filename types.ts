@@ -14,6 +14,8 @@ export interface Game {
   imageUrl: string;
   googlePlayUrl?: string;
   appStoreUrl?: string;
+  // Přidáno pro podporu webových her (Space Colony)
+  webUrl?: string;
   genre: LocalizedText;
   status: GameStatus;
 }

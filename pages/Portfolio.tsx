@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { GAMES, WEB_TESTING_URLS } from '../constants';
-import { Play, Smartphone, Clock } from 'lucide-react';
+import { Play, Smartphone, Clock, Globe } from 'lucide-react';
 import { useLanguage } from '../LanguageContext';
 
 const Portfolio: React.FC = () => {
@@ -38,6 +38,12 @@ const Portfolio: React.FC = () => {
   const handleAppStoreClick = (e: React.MouseEvent) => {
     e.preventDefault();
     setShowModal(true);
+  };
+
+  // Logika kliknutí na Web Button
+  const handleWebClick = (e: React.MouseEvent, url: string) => {
+    e.preventDefault();
+    window.open(url, '_blank');
   };
 
   return (
@@ -88,6 +94,20 @@ const Portfolio: React.FC = () => {
                 
                 {/* Action Buttons */}
                 <div className="mt-auto space-y-3">
+                  
+                  {/* NOVÉ TLAČÍTKO: Zobrazí se jen pokud má hra webUrl (Space Colony) */}
+                  {/* @ts-ignore - ignorujeme TS chybu pokud není aktualizován interface Game */}
+                  {game.webUrl && (
+                    <button 
+                      // @ts-ignore
+                      onClick={(e) => handleWebClick(e, game.webUrl)}
+                      className="w-full flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 px-3 rounded-lg font-medium transition-colors text-xs sm:text-sm cursor-pointer shadow-md mb-1"
+                    >
+                      <Globe size={16} />
+                      {t.portfolio.btnPlayWeb}
+                    </button>
+                  )}
+
                   <div className="grid grid-cols-2 gap-3">
                     <button 
                       onClick={(e) => handleGooglePlayClick(e, game)}
@@ -119,7 +139,7 @@ const Portfolio: React.FC = () => {
 
       </div>
 
-      {/* Modální okno (Popup) - nyní lokalizované */}
+      {/* Modální okno (Popup) - lokalizované */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm transition-opacity">
           <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 transform transition-all scale-100">

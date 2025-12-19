@@ -30,7 +30,8 @@ export const TRANSLATIONS: Record<Language, any> = {
       statusComingSoon: 'Připravuje se',
       moreInfo: 'Více informací',
       emptyState: 'Zatím zde nejsou žádné hry. Brzy přibudou!',
-      // Texty pro modální okno
+      // Nový překlad pro tlačítko webové hry
+      btnPlayWeb: 'Hrát na webu',
       modalTitle: 'Připravuje se',
       modalDescription: 'Uvedení této hry na tuto platformu pro vás připravuji.',
       modalBack: 'Zpět',
@@ -45,7 +46,6 @@ export const TRANSLATIONS: Record<Language, any> = {
       locationValue: 'Česká republika',
       cardCollabTitle: 'Spolupráce',
       cardCollabDesc: 'Jsem otevřený zpětné vazbě a novým nápadům. I když pracuji jako solo vývojář, rád si vyslechnu názory komunity hráčů.',
-      // Nové překlady formuláře
       formTitle: 'Napište mi zprávu',
       formName: 'Vaše jméno',
       formEmail: 'Váš email',
@@ -129,7 +129,8 @@ export const TRANSLATIONS: Record<Language, any> = {
       statusComingSoon: 'Coming Soon',
       moreInfo: 'More Info',
       emptyState: 'No games here yet. Coming soon!',
-      // New translations for modal
+      // New translations for web game button
+      btnPlayWeb: 'Play on Web',
       modalTitle: 'Coming Soon',
       modalDescription: 'I am preparing the release of this game on this platform for you.',
       modalBack: 'Back',
@@ -144,7 +145,6 @@ export const TRANSLATIONS: Record<Language, any> = {
       locationValue: 'Czech Republic',
       cardCollabTitle: 'Collaboration',
       cardCollabDesc: 'I am open to feedback and new ideas. Even though I work as a solo developer, I love hearing opinions from the gaming community.',
-      // New form translations
       formTitle: 'Send me a message',
       formName: 'Your Name',
       formEmail: 'Your Email',

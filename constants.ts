@@ -34,7 +34,6 @@ export const GAMES: Game[] = [
       en: 'A game inspired by the classic snake. Complete daily challenges and streaks. Earn achievements and new colors and skins to enhance your gaming experience.'
     },
     imageUrl: '/image/BlueSnake.png',
-    // Zde dáváme odkaz na Google Play Store (pro mobily)
     googlePlayUrl: 'https://play.google.com/store/apps/details?id=com.bluesnake.app',
     appStoreUrl: '#',
     genre: { cs: 'Arcade', en: 'Arcade' },
@@ -48,7 +47,6 @@ export const GAMES: Game[] = [
       en: 'Train your memory, play alone or with a friend. Complete daily challenges and earn achievements for your gameplay.'
     },
     imageUrl: '/image/MemoryGame.png',
-    // Zde dáváme odkaz na Google Play Store (pro mobily)
     googlePlayUrl: 'https://play.google.com/store/apps/details?id=com.bluememory.game',
     appStoreUrl: '#',
     genre: { cs: 'Puzzle', en: 'Puzzle' },
@@ -62,7 +60,9 @@ export const GAMES: Game[] = [
       en: 'A complex 2D strategic space game. Choose from many civilizations and dominate the galaxy. Elaborate system of mining, colonization, gaining experience, and upgrading units.'
     },
     imageUrl: '/image/SpaceColony.png',
-    googlePlayUrl: '#', // Space Colony nemá odkaz -> spustí modal
+    // Zde jsme přidali odkaz na webovou hru
+    webUrl: 'https://www.spacecolony.eu',
+    googlePlayUrl: '#',
     appStoreUrl: '#',
     genre: { cs: 'Strategy', en: 'Strategy' },
     status: 'coming_soon',
