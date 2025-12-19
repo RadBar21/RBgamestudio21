@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Smartphone, Cpu, User } from 'lucide-react';
+import { ArrowRight, Smartphone, Cpu, User, Beaker } from 'lucide-react';
 import { useLanguage } from '../LanguageContext';
 
 const Home: React.FC = () => {
@@ -72,6 +72,36 @@ const Home: React.FC = () => {
             </p>
           </div>
 
+        </div>
+      </section>
+
+      {/* NOVÁ SEKCE: Tester Banner */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-slate-50 border border-slate-200 rounded-3xl p-8 md:p-10 flex flex-col md:flex-row items-center gap-8 shadow-sm">
+          {/* Ikona */}
+          <div className="flex-shrink-0 bg-white p-4 rounded-full shadow-sm">
+            <Beaker size={48} className="text-blue-600" />
+          </div>
+          
+          {/* Text */}
+          <div className="flex-1 text-center md:text-left">
+            <h2 className="text-2xl font-bold text-slate-900 mb-3">
+              {t.home.testerTitle}
+            </h2>
+            <p className="text-slate-600 text-lg leading-relaxed mb-6 md:mb-0 max-w-2xl">
+              {t.home.testerDesc}
+            </p>
+          </div>
+
+          {/* Tlačítko */}
+          <div className="flex-shrink-0">
+            <Link
+              to="/contact"
+              className="inline-flex items-center justify-center px-6 py-3 border border-slate-300 shadow-sm text-base font-medium rounded-full text-slate-700 bg-white hover:bg-slate-50 transition-all hover:shadow-md"
+            >
+              {t.home.testerBtn}
+            </Link>
+          </div>
         </div>
       </section>
 
