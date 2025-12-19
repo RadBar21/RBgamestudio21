@@ -30,6 +30,10 @@ export const TRANSLATIONS: Record<Language, any> = {
       statusComingSoon: 'Připravuje se',
       moreInfo: 'Více informací',
       emptyState: 'Zatím zde nejsou žádné hry. Brzy přibudou!',
+      // Nové překlady pro modální okno
+      modalTitle: 'Připravuje se',
+      modalDescription: 'Uvedení této hry na tuto platformu pro vás připravuji.',
+      modalBack: 'Zpět',
     },
     contact: {
       title: 'Kontaktujte mě',
@@ -111,6 +115,10 @@ export const TRANSLATIONS: Record<Language, any> = {
       statusComingSoon: 'Coming Soon',
       moreInfo: 'More Info',
       emptyState: 'No games here yet. Coming soon!',
+      // New translations for modal
+      modalTitle: 'Coming Soon',
+      modalDescription: 'I am preparing the release of this game on this platform for you.',
+      modalBack: 'Back',
     },
     contact: {
       title: 'Contact Me',

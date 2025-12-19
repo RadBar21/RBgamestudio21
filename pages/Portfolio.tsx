@@ -70,7 +70,7 @@ const Portfolio: React.FC = () => {
                   {game.genre[language]}
                 </div>
 
-                {/* Coming Soon Badge (pouze pokud je status coming_soon, ale odkazy mohou fungovat i tak) */}
+                {/* Coming Soon Badge */}
                 {game.status === 'coming_soon' && (
                   <div className="absolute top-4 left-4 bg-amber-400/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-white shadow-sm flex items-center gap-1">
                     <Clock size={12} />
@@ -119,7 +119,7 @@ const Portfolio: React.FC = () => {
 
       </div>
 
-      {/* Modální okno (Popup) */}
+      {/* Modální okno (Popup) - nyní lokalizované */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm transition-opacity">
           <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 transform transition-all scale-100">
@@ -128,16 +128,16 @@ const Portfolio: React.FC = () => {
                 <Clock className="h-6 w-6 text-blue-600" />
               </div>
               <h3 className="text-lg leading-6 font-medium text-slate-900 mb-2">
-                Coming Soon
+                {t.portfolio.modalTitle}
               </h3>
               <p className="text-slate-500 mb-6">
-                Uvedení této hry na tuto platformu pro vás připravuji.
+                {t.portfolio.modalDescription}
               </p>
               <button
                 onClick={() => setShowModal(false)}
                 className="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm cursor-pointer"
               >
-                Zpět
+                {t.portfolio.modalBack}
               </button>
             </div>
           </div>
