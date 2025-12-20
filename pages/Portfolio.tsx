@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { GAMES, WEB_TESTING_URLS } from '../constants';
-import { Play, Smartphone, Clock, Globe } from 'lucide-react';
+import { Play, Smartphone, Clock, Globe, Info } from 'lucide-react';
 import { useLanguage } from '../LanguageContext';
 
 const Portfolio: React.FC = () => {
   const { t, language } = useLanguage();
   const [showModal, setShowModal] = useState(false);
+  // Stav pro určení typu hlášky: 'coming_soon' (Připravuje se) nebo 'desktop_only' (Jen pro PC)
+  const [modalType, setModalType] = useState<'coming_soon' | 'desktop_only'>('coming_soon');
 
   // Funkce pro detekci mobilního zařízení
   const isMobileDevice = () => {
@@ -16,7 +18,7 @@ const Portfolio: React.FC = () => {
   const handleGooglePlayClick = (e: React.MouseEvent, game: typeof GAMES[0]) => {
     e.preventDefault();
 
-    // 1. Zkontrolujeme, zda má hra definovaný Web Testing URL (Blue Snake, Memory)
+    // 1. Zkontrolujeme, zda má hra definovaný Web Testing URL
     const webTestingUrl = WEB_TESTING_URLS[game.id];
 
     if (webTestingUrl && game.googlePlayUrl && game.googlePlayUrl !== '#') {
@@ -29,21 +31,33 @@ const Portfolio: React.FC = () => {
         window.open(webTestingUrl, '_blank');
       }
     } else {
-      // Hra nemá odkazy (Space Colony) -> Zobrazit "Připravuji"
+      // Hra nemá odkazy -> Zobrazit "Připravuje se"
+      setModalType('coming_soon');
       setShowModal(true);
     }
   };
 
-  // Logika kliknutí na App Store (Vždy zobrazit "Připravuji")
+  // Logika kliknutí na App Store
   const handleAppStoreClick = (e: React.MouseEvent) => {
     e.preventDefault();
+    setModalType('coming_soon');
     setShowModal(true);
   };
 
   // Logika kliknutí na Web Button
-  const handleWebClick = (e: React.MouseEvent, url: string) => {
+  const handleWebClick = (e: React.MouseEvent, game: typeof GAMES[0]) => {
     e.preventDefault();
-    window.open(url, '_blank');
+    
+    if (!game.webUrl) return;
+
+    // Pokud je hra jen pro PC a uživatel je na mobilu
+    if (game.isDesktopOnly && isMobileDevice()) {
+      setModalType('desktop_only');
+      setShowModal(true);
+    } else {
+      // Jinak otevřeme hru
+      window.open(game.webUrl, '_blank');
+    }
   };
 
   return (
@@ -95,13 +109,10 @@ const Portfolio: React.FC = () => {
                 {/* Action Buttons */}
                 <div className="mt-auto space-y-3">
                   
-                  {/* NOVÉ TLAČÍTKO: Zobrazí se jen pokud má hra webUrl (Space Colony) */}
-                  {/* @ts-ignore - ignorujeme TS chybu pokud není aktualizován interface Game */}
+                  {/* TLAČÍTKO WEB: Zobrazí se, pokud má hra webUrl */}
                   {game.webUrl && (
                     <button 
-                      // @ts-ignore
-                      onClick={(e) => handleWebClick(e, game.webUrl)}
-                      // Změna barvy na bg-blue-600
+                      onClick={(e) => handleWebClick(e, game)}
                       className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-2.5 px-3 rounded-lg font-medium transition-colors text-xs sm:text-sm cursor-pointer shadow-md mb-1"
                     >
                       <Globe size={16} />
@@ -140,20 +151,37 @@ const Portfolio: React.FC = () => {
 
       </div>
 
-      {/* Modální okno (Popup) - lokalizované */}
+      {/* Modální okno (Popup) */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm transition-opacity">
           <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 transform transition-all scale-100">
             <div className="text-center">
+              
+              {/* Ikona podle typu hlášky */}
               <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 mb-4">
-                <Clock className="h-6 w-6 text-blue-600" />
+                {modalType === 'coming_soon' ? (
+                  <Clock className="h-6 w-6 text-blue-600" />
+                ) : (
+                  <Smartphone className="h-6 w-6 text-blue-600" />
+                )}
               </div>
+
+              {/* Titulek */}
               <h3 className="text-lg leading-6 font-medium text-slate-900 mb-2">
-                {t.portfolio.modalTitle}
+                {modalType === 'coming_soon' 
+                  ? t.portfolio.modalTitle 
+                  : t.portfolio.moreInfo /* "Více informací" jako nadpis pro varování */
+                }
               </h3>
+
+              {/* Popis */}
               <p className="text-slate-500 mb-6">
-                {t.portfolio.modalDescription}
+                {modalType === 'coming_soon' 
+                  ? t.portfolio.modalDescription 
+                  : t.portfolio.modalDesktopOnly
+                }
               </p>
+
               <button
                 onClick={() => setShowModal(false)}
                 className="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm cursor-pointer"

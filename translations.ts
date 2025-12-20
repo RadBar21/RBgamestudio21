@@ -20,7 +20,6 @@ export const TRANSLATIONS: Record<Language, any> = {
       ctaBottomTitle: 'Připraveni hrát?',
       ctaBottomDesc: 'Prohlédněte si mé portfolio a stáhněte si nejnovější tituly přímo do vašeho telefonu.',
       ctaBottomLink: 'Přejít do portfolia',
-      // Nová sekce pro testery
       testerTitle: 'Chceš se stát testerem?',
       testerDesc: 'Chceš se podílet na testování aplikace v obchodě Google Play nebo App Store? Můžeš nejen testovat, ale také svými nápady přispět k finální podobě aplikace před jejím zveřejněním. Kontaktuj mě přes formulář pro více informací.',
       testerBtn: 'Přejít na formulář',
@@ -38,6 +37,8 @@ export const TRANSLATIONS: Record<Language, any> = {
       modalTitle: 'Připravuje se',
       modalDescription: 'Uvedení této hry na tuto platformu pro vás připravuji.',
       modalBack: 'Zpět',
+      // NOVÝ TEXT pro mobilní omezení
+      modalDesktopOnly: 'Pro mobilní zařízení použijte Google Play nebo App Store.',
     },
     contact: {
       title: 'Kontaktujte mě',
@@ -122,7 +123,6 @@ export const TRANSLATIONS: Record<Language, any> = {
       ctaBottomTitle: 'Ready to Play?',
       ctaBottomDesc: 'Check out my portfolio and download the latest titles directly to your phone.',
       ctaBottomLink: 'Go to Portfolio',
-      // New tester section translations
       testerTitle: 'Want to become a tester?',
       testerDesc: 'Do you want to participate in testing apps on the Google Play Store or App Store? You can not only test but also contribute your ideas to the final shape of the app before its release. Contact me via the form for more information.',
       testerBtn: 'Go to form',
@@ -140,6 +140,8 @@ export const TRANSLATIONS: Record<Language, any> = {
       modalTitle: 'Coming Soon',
       modalDescription: 'I am preparing the release of this game on this platform for you.',
       modalBack: 'Back',
+      // NEW TEXT for mobile restriction
+      modalDesktopOnly: 'For mobile devices, please use Google Play or App Store.',
     },
     contact: {
       title: 'Contact Me',

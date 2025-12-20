@@ -14,8 +14,9 @@ export interface Game {
   imageUrl: string;
   googlePlayUrl?: string;
   appStoreUrl?: string;
-  // Přidáno pro podporu webových her (Space Colony)
   webUrl?: string;
+  // NOVÁ VLASTNOST: Určuje, zda je webová verze hry jen pro PC
+  isDesktopOnly?: boolean; 
   genre: LocalizedText;
   status: GameStatus;
 }

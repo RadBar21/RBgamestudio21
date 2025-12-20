@@ -19,10 +19,10 @@ export const NAV_ITEMS: NavItem[] = [
   },
 ];
 
-// Mapování ID her na jejich Web Testing URL (pro přístup z počítače)
+// Mapování ID her na jejich Web Testing URL (pro přístup z počítače přes tlačítko Google Play)
 export const WEB_TESTING_URLS: Record<string, string> = {
-  '1': 'https://play.google.com/apps/testing/com.bluesnake.app',      // Simple Blue Snake Evolution
-  '2': 'https://play.google.com/apps/testing/com.bluememory.game',    // Blue Memory Game
+  '1': 'https://play.google.com/apps/testing/com.bluesnake.app',
+  '2': 'https://play.google.com/apps/testing/com.bluememory.game',
 };
 
 export const GAMES: Game[] = [
@@ -36,6 +36,9 @@ export const GAMES: Game[] = [
     imageUrl: '/image/BlueSnake.png',
     googlePlayUrl: 'https://play.google.com/store/apps/details?id=com.bluesnake.app',
     appStoreUrl: '#',
+    // NOVÉ: Odkaz na GitHub Pages a omezení jen pro PC
+    webUrl: 'https://radbar21.github.io/Simle-blue-snake/',
+    isDesktopOnly: true,
     genre: { cs: 'Arcade', en: 'Arcade' },
     status: 'coming_soon',
   },
@@ -50,6 +53,9 @@ export const GAMES: Game[] = [
     googlePlayUrl: 'https://play.google.com/store/apps/details?id=com.bluememory.game',
     appStoreUrl: '#',
     genre: { cs: 'Puzzle', en: 'Puzzle' },
+    // NOVÉ: Odkaz na GitHub Pages a omezení jen pro PC
+    webUrl: 'https://radbar21.github.io/Blue-memory-game/',
+    isDesktopOnly: true,
     status: 'coming_soon',
   },
   {
@@ -60,7 +66,7 @@ export const GAMES: Game[] = [
       en: 'A complex 2D strategic space game. Choose from many civilizations and dominate the galaxy. Elaborate system of mining, colonization, gaining experience, and upgrading units.'
     },
     imageUrl: '/image/SpaceColony.png',
-    // Zde jsme přidali odkaz na webovou hru
+    // Space Colony nemá isDesktopOnly, takže půjde spustit všude
     webUrl: 'https://www.spacecolony.eu',
     googlePlayUrl: '#',
     appStoreUrl: '#',
