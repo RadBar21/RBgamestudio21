@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Smartphone, Cpu, User, Beaker } from 'lucide-react';
+import { ArrowRight, Smartphone, Cpu, User, Beaker, Instagram, MessageCircle } from 'lucide-react';
 import { useLanguage } from '../LanguageContext';
 
 const Home: React.FC = () => {
@@ -75,14 +75,12 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* Spojená sekce se dvěma bannery */}
+      {/* Spojená sekce se dvěma bannery (Tester & CTA) */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
-        {/* Grid zajišťující vedle sebe rozložení na PC a stejnou velikost */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           
-          {/* 1. Banner: Tester (Nový styl - modrý, konzistentní) */}
+          {/* 1. Banner: Tester */}
           <div className="bg-blue-600 rounded-3xl p-8 md:p-10 text-center md:text-left text-white relative overflow-hidden flex flex-col justify-between items-center md:items-start gap-6 shadow-lg shadow-blue-600/20">
-            {/* Kruhy na pozadí pro konzistenci */}
             <div className="absolute top-0 left-0 w-48 h-48 bg-white opacity-5 rounded-full -ml-12 -mt-12"></div>
             <div className="relative z-10 flex flex-col items-center md:items-start gap-4">
               <Beaker size={40} className="text-blue-100" />
@@ -101,9 +99,8 @@ const Home: React.FC = () => {
             </div>
           </div>
 
-          {/* 2. Banner: CTA (Původní "Ready to Play" styl) */}
+          {/* 2. Banner: CTA (Ready to Play) */}
           <div className="bg-blue-600 rounded-3xl p-8 md:p-10 text-center text-white relative overflow-hidden flex flex-col justify-between shadow-lg shadow-blue-600/20">
-            {/* Kruhy na pozadí pro konzistenci */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -mr-16 -mt-16"></div>
             <div className="relative z-10">
               <Smartphone size={40} className="text-blue-100 mx-auto mb-4" />
@@ -122,6 +119,48 @@ const Home: React.FC = () => {
             </div>
           </div>
 
+        </div>
+      </section>
+
+      {/* NOVÁ SEKCE: Komunita */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+        <div className="bg-white border border-slate-100 rounded-3xl p-8 md:p-12 text-center shadow-sm relative overflow-hidden">
+          {/* Dekorativní rozostřené pozadí */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 -mt-20 w-96 h-96 rounded-full bg-blue-50 blur-3xl opacity-50 pointer-events-none"></div>
+
+          <div className="relative z-10">
+            <h2 className="text-3xl font-bold text-slate-900 mb-4">
+              {t.home.communityTitle}
+            </h2>
+            <p className="text-slate-600 max-w-2xl mx-auto text-lg mb-8 leading-relaxed">
+              {t.home.communityDesc}
+            </p>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              {/* Discord Button */}
+              <a 
+                href="https://discord.gg/Ung5yweuVf" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 px-8 py-3.5 rounded-full text-white font-bold transition-all shadow-md hover:shadow-lg transform active:scale-[0.98] w-full sm:w-auto"
+                style={{ backgroundColor: '#5865F2' }} // Oficiální Discord barva
+              >
+                <MessageCircle size={24} />
+                {t.home.discordBtn}
+              </a>
+
+              {/* Instagram Button */}
+              <a 
+                href="https://www.instagram.com/spacecolony_2d_game?igsh=aDZyeWtlb3Byczky&utm_source=qr" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 px-8 py-3.5 rounded-full text-white font-bold transition-all shadow-md hover:shadow-lg transform active:scale-[0.98] w-full sm:w-auto bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500"
+              >
+                <Instagram size={24} />
+                {t.home.instagramBtn}
+              </a>
+            </div>
+          </div>
         </div>
       </section>
     </div>

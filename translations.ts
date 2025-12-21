@@ -23,6 +23,11 @@ export const TRANSLATIONS: Record<Language, any> = {
       testerTitle: 'Chceš se stát testerem?',
       testerDesc: 'Chceš se podílet na testování aplikace v obchodě Google Play nebo App Store? Můžeš nejen testovat, ale také svými nápady přispět k finální podobě aplikace před jejím zveřejněním. Kontaktuj mě přes formulář pro více informací.',
       testerBtn: 'Přejít na formulář',
+      // NOVÁ SEKCE: Komunita
+      communityTitle: 'Staň se členem komunity',
+      communityDesc: 'Přidej se ke mě na těchto platformách a nenech si ujít informace o probíhajících ale i připravovaných projektech, novinkách a zajímavostech ze zákulisí mé tvorby.',
+      discordBtn: 'Discord Server',
+      instagramBtn: 'Instagram',
     },
     portfolio: {
       title: 'Moje Hry',
@@ -37,7 +42,6 @@ export const TRANSLATIONS: Record<Language, any> = {
       modalTitle: 'Připravuje se',
       modalDescription: 'Uvedení této hry na tuto platformu pro vás připravuji.',
       modalBack: 'Zpět',
-      // NOVÝ TEXT pro mobilní omezení
       modalDesktopOnly: 'Pro mobilní zařízení použijte Google Play nebo App Store.',
     },
     contact: {
@@ -98,7 +102,7 @@ export const TRANSLATIONS: Record<Language, any> = {
       changesText: 'Naše Zásady ochrany osobních údajů mohu čas od času aktualizovat. Doporučujeme vám proto tuto stránku pravidelně kontrolovat kvůli případným změnám. O jakýchkoli změnách vás budu informovat zveřejněním nových Zásad ochrany osobních údajů na této stránce.',
       
       contactTitle: 'Kontaktujte nás',
-      contactText: 'Máte-li jakékoli dotazy nebo návrhy týkající se mých Zásad ochrany osobních údajů, neváhejte mě kontaktovat na RBgamestudio21@gmail.com.',
+      contactText: 'If you have any questions or suggestions about my Privacy Policy, do not hesitate to contact me at RBgamestudio21@gmail.com.',
     },
     footer: {
       rights: 'Všechna práva vyhrazena.',
@@ -126,6 +130,11 @@ export const TRANSLATIONS: Record<Language, any> = {
       testerTitle: 'Want to become a tester?',
       testerDesc: 'Do you want to participate in testing apps on the Google Play Store or App Store? You can not only test but also contribute your ideas to the final shape of the app before its release. Contact me via the form for more information.',
       testerBtn: 'Go to form',
+      // NEW SECTION: Community
+      communityTitle: 'Join the Community',
+      communityDesc: 'Join me on these platforms and don\'t miss out on updates about ongoing and upcoming projects, news, and behind-the-scenes insights from my development journey.',
+      discordBtn: 'Discord Server',
+      instagramBtn: 'Instagram',
     },
     portfolio: {
       title: 'My Games',
@@ -140,7 +149,6 @@ export const TRANSLATIONS: Record<Language, any> = {
       modalTitle: 'Coming Soon',
       modalDescription: 'I am preparing the release of this game on this platform for you.',
       modalBack: 'Back',
-      // NEW TEXT for mobile restriction
       modalDesktopOnly: 'For mobile devices, please use Google Play or App Store.',
     },
     contact: {
