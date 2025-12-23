@@ -5,7 +5,6 @@ import ReactMarkdown from 'react-markdown';
 import { AI_SYSTEM_PROMPT } from '../ai-knowledge';
 
 // Inicializace Gemini API
-// POZOR: V produkci je lepší volat API přes backend, ale pro portfolio to stačí takto.
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY || ''; 
 const genAI = new GoogleGenerativeAI(API_KEY);
 
@@ -23,7 +22,6 @@ const AiChatWidget: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Automatické scrollování dolů
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -33,7 +31,15 @@ const AiChatWidget: FC = () => {
   }, [messages, isOpen]);
 
   const handleSend = async () => {
-    if (!input.trim() || !API_KEY) return;
+    if (!API_KEY) {
+      setMessages(prev => [...prev, { 
+        role: 'model', 
+        text: '⚠️ **Chyba konfigurace:** Nebyl nalezen API klíč. Zkontroluj prosím nastavení.' 
+      }]);
+      return;
+    }
+
+    if (!input.trim()) return;
 
     const userMessage = input;
     setInput('');
@@ -41,9 +47,9 @@ const AiChatWidget: FC = () => {
     setIsLoading(true);
 
     try {
-      const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+      // ZMĚNA: Používáme explicitní název modelu, který je nejvíce kompatibilní
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
       
-      // Vytvoření historie chatu pro kontext
       const chat = model.startChat({
         history: [
           {
@@ -54,7 +60,6 @@ const AiChatWidget: FC = () => {
             role: 'model',
             parts: [{ text: 'Rozumím. Jsem připraven odpovídat jako asistent RB Game Studia 21.' }],
           },
-          // Přidáme předchozí zprávy pro kontext konverzace (posledních 10)
           ...messages.slice(-10).map(msg => ({
             role: msg.role,
             parts: [{ text: msg.text }]
@@ -68,7 +73,11 @@ const AiChatWidget: FC = () => {
       setMessages(prev => [...prev, { role: 'model', text: response }]);
     } catch (error) {
       console.error('Chyba AI:', error);
-      setMessages(prev => [...prev, { role: 'model', text: 'Omlouvám se, ale momentálně se nemohu spojit se serverem. Zkus to prosím později.' }]);
+      // Detailnější chybová hláška pro uživatele
+      setMessages(prev => [...prev, { 
+        role: 'model', 
+        text: 'Omlouvám se, spojení s AI se nezdařilo (Chyba 404). Model se pravděpodobně ještě aktivuje, zkuste to prosím za chvíli.' 
+      }]);
     } finally {
       setIsLoading(false);
     }
@@ -81,20 +90,10 @@ const AiChatWidget: FC = () => {
     }
   };
 
-  // Pokud není API klíč, komponentu vůbec nezobrazíme (nebo zobrazíme varování v konzoli)
-  if (!API_KEY) {
-    console.warn('AI Chat: Chybí VITE_GEMINI_API_KEY');
-    return null;
-  }
-
   return (
     <div className="fixed bottom-4 right-4 z-50 flex flex-col items-end gap-4 font-sans">
-      
-      {/* Chat Window */}
       {isOpen && (
         <div className="bg-white w-[350px] h-[500px] rounded-2xl shadow-2xl flex flex-col border border-slate-200 overflow-hidden animate-in slide-in-from-bottom-5 duration-300">
-          
-          {/* Header */}
           <div className="bg-blue-600 p-4 text-white flex justify-between items-center shadow-md">
             <div className="flex items-center gap-2">
               <div className="bg-white/20 p-2 rounded-full">
@@ -116,19 +115,14 @@ const AiChatWidget: FC = () => {
             </button>
           </div>
 
-          {/* Messages Area */}
           <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50">
             {messages.map((msg, idx) => (
-              <div 
-                key={idx} 
-                className={`flex gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}
-              >
+              <div key={idx} className={`flex gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm ${
                   msg.role === 'user' ? 'bg-slate-200 text-slate-600' : 'bg-blue-100 text-blue-600'
                 }`}>
                   {msg.role === 'user' ? <User size={16} /> : <Bot size={16} />}
                 </div>
-                
                 <div className={`max-w-[80%] p-3 text-sm rounded-2xl shadow-sm ${
                   msg.role === 'user' 
                     ? 'bg-blue-600 text-white rounded-tr-none' 
@@ -138,7 +132,6 @@ const AiChatWidget: FC = () => {
                 </div>
               </div>
             ))}
-            
             {isLoading && (
               <div className="flex gap-3">
                 <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0">
@@ -152,7 +145,6 @@ const AiChatWidget: FC = () => {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Input Area */}
           <div className="p-3 bg-white border-t border-slate-100">
             <div className="flex gap-2 items-center bg-slate-50 border border-slate-200 rounded-full px-4 py-2 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all">
               <input
@@ -176,11 +168,9 @@ const AiChatWidget: FC = () => {
                <p className="text-[10px] text-slate-400">Powered by Google Gemini AI</p>
             </div>
           </div>
-
         </div>
       )}
 
-      {/* Toggle Button (Floating Icon) - Right Bottom */}
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
