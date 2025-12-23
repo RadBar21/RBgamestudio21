@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState, FC, MouseEvent } from 'react';
 import { GAMES, WEB_TESTING_URLS } from '../constants';
 import { Play, Smartphone, Clock, Globe, Info } from 'lucide-react';
 import { useLanguage } from '../LanguageContext';
 
-const Portfolio: React.FC = () => {
+const Portfolio: FC = () => {
   const { t, language } = useLanguage();
   const [showModal, setShowModal] = useState(false);
   // Stav pro určení typu hlášky: 'coming_soon' (Připravuje se) nebo 'desktop_only' (Jen pro PC)
@@ -15,7 +15,7 @@ const Portfolio: React.FC = () => {
   };
 
   // Logika kliknutí na Google Play
-  const handleGooglePlayClick = (e: React.MouseEvent, game: typeof GAMES[0]) => {
+  const handleGooglePlayClick = (e: MouseEvent, game: typeof GAMES[0]) => {
     e.preventDefault();
 
     // 1. Zkontrolujeme, zda má hra definovaný Web Testing URL
@@ -38,14 +38,14 @@ const Portfolio: React.FC = () => {
   };
 
   // Logika kliknutí na App Store
-  const handleAppStoreClick = (e: React.MouseEvent) => {
+  const handleAppStoreClick = (e: MouseEvent) => {
     e.preventDefault();
     setModalType('coming_soon');
     setShowModal(true);
   };
 
   // Logika kliknutí na Web Button
-  const handleWebClick = (e: React.MouseEvent, game: typeof GAMES[0]) => {
+  const handleWebClick = (e: MouseEvent, game: typeof GAMES[0]) => {
     e.preventDefault();
     
     if (!game.webUrl) return;

@@ -1,8 +1,8 @@
-import React from 'react';
+import { FC } from 'react';
 import { ShieldCheck } from 'lucide-react';
 import { useLanguage } from '../LanguageContext';
 
-const Privacy: React.FC = () => {
+const Privacy: FC = () => {
   const { t } = useLanguage();
 
   return (
@@ -38,17 +38,30 @@ const Privacy: React.FC = () => {
             <p className="mb-4 text-justify">
               {t.privacy.infoCollectionText}
             </p>
-            
-            <p className="mb-2 font-medium">{t.privacy.thirdPartyServicesTitle}</p>
-            <ul className="list-disc pl-5 space-y-1">
+          </section>
+
+          {/* Third Party Services */}
+          <section className="mb-8">
+            <h2 className="text-xl font-bold text-slate-900 mb-4">{t.privacy.thirdPartyServicesTitle}</h2>
+            <ul className="list-disc pl-5 space-y-2">
+              <li>
+                <a href="https://www.google.com/policies/privacy/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                  Google Play Services
+                </a>
+              </li>
               <li>
                 <a href="https://support.google.com/admob/answer/6128543?hl=cs" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
                   AdMob
                 </a>
               </li>
               <li>
-                <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-                  Google Play Services
+                <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                  Google Analytics for Firebase
+                </a>
+              </li>
+              <li>
+                <a href="https://firebase.google.com/support/privacy/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                  Firebase Crashlytics
                 </a>
               </li>
             </ul>
@@ -113,11 +126,10 @@ const Privacy: React.FC = () => {
           {/* Contact */}
           <section className="mb-8">
             <h2 className="text-xl font-bold text-slate-900 mb-4">{t.privacy.contactTitle}</h2>
-            <p>
+            <p className="text-justify">
               {t.privacy.contactText}
             </p>
           </section>
-
         </div>
       </div>
     </div>

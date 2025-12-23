@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Smartphone, Cpu, User, Beaker, Instagram, MessageCircle } from 'lucide-react';
 import { useLanguage } from '../LanguageContext';

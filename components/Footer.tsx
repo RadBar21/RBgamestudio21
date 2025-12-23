@@ -1,7 +1,7 @@
-import React from 'react';
+import { FC } from 'react';
 import { useLanguage } from '../LanguageContext';
 
-const Footer: React.FC = () => {
+const Footer: FC = () => {
   const currentYear = new Date().getFullYear();
   const { t } = useLanguage();
 
