@@ -39,8 +39,8 @@ const AiChatWidget: FC = () => {
     setIsLoading(true);
 
     try {
-      // Explicitní volání modelu pro lepší kompatibilitu s novějším SDK
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+      // AKTUALIZACE: Přechod na nejnovější a nejúspornější model Gemini 2.5 Flash
+      const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
       
       const chat = model.startChat({
         history: [
@@ -65,10 +65,9 @@ const AiChatWidget: FC = () => {
       setMessages(prev => [...prev, { role: 'model', text: response }]);
     } catch (error) {
       console.error('Chyba AI:', error);
-      // Přesnější chybová hláška pro případ 404 nebo prodlevy v aktivaci
       setMessages(prev => [...prev, { 
         role: 'model', 
-        text: 'Omlouvám se, spojení s AI se nezdařilo. Google API model Gemini 1.5 Flash dočasně nenašlo nebo se klíč ještě aktivuje. Zkuste to prosím za 10 minut.' 
+        text: 'Omlouvám se, spojení s AI se nezdařilo. Model Gemini 2.5 Flash je momentálně vytížen. Zkuste to prosím za chvíli.' 
       }]);
     } finally {
       setIsLoading(false);
@@ -82,7 +81,6 @@ const AiChatWidget: FC = () => {
     }
   };
 
-  // Podmínka, kterou jsi chtěl zachovat: pokud není API klíč, widget se nevykreslí
   if (!API_KEY) {
     console.warn('AI Chat: Chybí VITE_GEMINI_API_KEY');
     return null;
@@ -181,7 +179,7 @@ const AiChatWidget: FC = () => {
         </div>
       )}
 
-      {/* Toggle Button (Floating Icon) - Right Bottom */}
+      {/* Toggle Button */}
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
