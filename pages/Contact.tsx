@@ -30,7 +30,7 @@ const Contact: FC = () => {
 
       if (data.success) {
         setStatus("success");
-        (event.target as HTMLFormElement).reset();
+        (event.currentTarget as HTMLFormElement).reset();
       } else {
         console.error("Error", data);
         setResult(data.message);
@@ -46,6 +46,8 @@ const Contact: FC = () => {
   return (
     <div className="bg-slate-50 min-h-screen py-12 md:py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Hlavička */}
         <div className="text-center mb-16">
           <h1 className="text-3xl font-extrabold text-slate-900 sm:text-4xl">
             {t.contact.title}
@@ -55,109 +57,133 @@ const Contact: FC = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Info Cards */}
-          <div className="space-y-6">
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          
+          {/* Levý sloupec: Kontaktní informace */}
+          <div className="space-y-8">
+            {/* Contact Info Card */}
+            <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
               <h3 className="text-xl font-bold text-slate-900 mb-6">{t.contact.cardInfoTitle}</h3>
-              <div className="space-y-4">
-                <div className="flex items-start gap-4">
-                  <div className="p-2 bg-blue-100 text-blue-600 rounded-lg">
-                    <User size={20} />
+              <div className="space-y-6">
+                
+                <div className="flex items-start">
+                  <div className="flex-shrink-0">
+                    <div className="flex items-center justify-center h-12 w-12 rounded-lg bg-blue-100 text-blue-600">
+                      <User className="h-6 w-6" />
+                    </div>
                   </div>
-                  <div>
+                  <div className="ml-4">
                     <p className="text-sm font-medium text-slate-500">{t.contact.role}</p>
-                    <p className="text-slate-900 font-bold">Radek Bartoníček</p>
+                    <p className="text-lg font-semibold text-slate-900">Radek Bartoníček</p>
                   </div>
                 </div>
-                <div className="flex items-start gap-4">
-                  <div className="p-2 bg-blue-100 text-blue-600 rounded-lg">
-                    <Mail size={20} />
+
+                <div className="flex items-start">
+                  <div className="flex-shrink-0">
+                    <div className="flex items-center justify-center h-12 w-12 rounded-lg bg-blue-100 text-blue-600">
+                      <Mail className="h-6 w-6" />
+                    </div>
                   </div>
-                  <div>
+                  <div className="ml-4">
                     <p className="text-sm font-medium text-slate-500">{t.contact.email}</p>
-                    <a href="mailto:RBgamestudio21@gmail.com" className="text-blue-600 hover:underline font-medium">
+                    <a href="mailto:RBgamestudio21@gmail.com" className="text-lg font-semibold text-slate-900 hover:text-blue-600 transition-colors">
                       RBgamestudio21@gmail.com
                     </a>
                   </div>
                 </div>
-                <div className="flex items-start gap-4">
-                  <div className="p-2 bg-blue-100 text-blue-600 rounded-lg">
-                    <MapPin size={20} />
+
+                <div className="flex items-start">
+                  <div className="flex-shrink-0">
+                    <div className="flex items-center justify-center h-12 w-12 rounded-lg bg-blue-100 text-blue-600">
+                      <MapPin className="h-6 w-6" />
+                    </div>
                   </div>
-                  <div>
+                  <div className="ml-4">
                     <p className="text-sm font-medium text-slate-500">{t.contact.location}</p>
-                    <p className="text-slate-900 font-medium">{t.contact.locationValue}</p>
+                    <p className="text-lg font-semibold text-slate-900">{t.contact.locationValue}</p>
                   </div>
                 </div>
+
               </div>
             </div>
 
-            <div className="bg-blue-600 p-8 rounded-2xl shadow-lg text-white relative overflow-hidden">
-              <div className="absolute top-0 right-0 p-4 opacity-10">
-                <MessageSquare size={80} />
+            {/* Collaboration Card - Obnovené dekorativní kruhy */}
+            <div className="bg-blue-600 rounded-2xl shadow-lg p-8 text-white relative overflow-hidden">
+              {/* Dekorativní kruhy na pozadí */}
+              <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -mr-16 -mt-16"></div>
+              <div className="absolute bottom-0 left-0 w-48 h-48 bg-white opacity-5 rounded-full -ml-12 -mb-12"></div>
+              
+              <div className="relative z-10">
+                <h3 className="text-xl font-bold mb-4">{t.contact.cardCollabTitle}</h3>
+                <p className="text-blue-100 leading-relaxed">
+                  {t.contact.cardCollabDesc}
+                </p>
               </div>
-              <h3 className="text-xl font-bold mb-4 relative z-10">{t.contact.cardCollabTitle}</h3>
-              <p className="text-blue-100 relative z-10 leading-relaxed">
-                {t.contact.cardCollabDesc}
-              </p>
             </div>
           </div>
 
-          {/* Contact Form */}
-          <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
-            <h3 className="text-xl font-bold text-slate-900 mb-6">{t.contact.formTitle}</h3>
+          {/* Pravý sloupec: Kontaktní formulář */}
+          <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
+            <h3 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+              <MessageSquare className="h-5 w-5 text-blue-600" />
+              {t.contact.formTitle}
+            </h3>
             
             {status === 'success' ? (
-              <div className="text-center py-10 animate-in zoom-in duration-300">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 text-green-600 rounded-full mb-6">
-                  <CheckCircle size={32} />
+              <div className="flex flex-col items-center justify-center py-12 text-center animate-fade-in">
+                <div className="h-16 w-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-4">
+                  <CheckCircle className="h-8 w-8" />
                 </div>
                 <h4 className="text-2xl font-bold text-slate-900 mb-2">{t.contact.successTitle}</h4>
-                <p className="text-slate-500 mb-8">{t.contact.successMessage}</p>
+                <p className="text-slate-500 max-w-xs">{t.contact.successMessage}</p>
                 <button 
                   onClick={() => setStatus('idle')}
-                  className="text-blue-600 font-bold hover:text-blue-700 transition-colors"
+                  className="mt-6 text-blue-600 hover:text-blue-800 font-medium text-sm"
                 >
                   {t.contact.btnSendNew}
                 </button>
               </div>
             ) : (
-              <form onSubmit={onSubmit} className="space-y-5">
+              <form onSubmit={onSubmit} className="space-y-6">
+                {/* Honeypot field (anti-spam) - hidden */}
+                <input type="checkbox" name="botcheck" className="hidden" style={{ display: 'none' }} />
+
                 <div>
-                  <label htmlFor="name" className="block text-sm font-bold text-slate-700 mb-1">
+                  <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-1">
                     {t.contact.formName}
                   </label>
-                  <input
-                    type="text"
+                  <input 
+                    type="text" 
+                    name="name" 
                     id="name"
-                    name="name"
-                    required
+                    required 
                     placeholder={t.contact.placeholderName}
                     className="w-full rounded-lg border-slate-200 border px-4 py-2.5 text-slate-900 focus:border-blue-500 focus:ring-blue-500 focus:outline-none transition-all"
                   />
                 </div>
+
                 <div>
-                  <label htmlFor="email" className="block text-sm font-bold text-slate-700 mb-1">
+                  <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1">
                     {t.contact.formEmail}
                   </label>
-                  <input
-                    type="email"
+                  <input 
+                    type="email" 
+                    name="email" 
                     id="email"
-                    name="email"
-                    required
+                    required 
                     placeholder={t.contact.placeholderEmail}
                     className="w-full rounded-lg border-slate-200 border px-4 py-2.5 text-slate-900 focus:border-blue-500 focus:ring-blue-500 focus:outline-none transition-all"
                   />
                 </div>
+
                 <div>
-                  <label htmlFor="message" className="block text-sm font-bold text-slate-700 mb-1">
+                  <label htmlFor="message" className="block text-sm font-medium text-slate-700 mb-1">
                     {t.contact.formMessage}
                   </label>
-                  <textarea
+                  <textarea 
+                    name="message" 
                     id="message"
-                    name="message"
-                    required
+                    required 
                     rows={4}
                     placeholder={t.contact.placeholderMessage}
                     className="w-full rounded-lg border-slate-200 border px-4 py-2.5 text-slate-900 focus:border-blue-500 focus:ring-blue-500 focus:outline-none transition-all resize-none"

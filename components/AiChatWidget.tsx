@@ -88,7 +88,7 @@ const AiChatWidget: FC = () => {
   }
 
   return (
-    <div className="fixed bottom-4 left-4 z-50 flex flex-col items-start gap-4 font-sans">
+    <div className="fixed bottom-4 right-4 z-50 flex flex-col items-end gap-4 font-sans">
       
       {/* Chat Window */}
       {isOpen && (
@@ -180,7 +180,7 @@ const AiChatWidget: FC = () => {
         </div>
       )}
 
-      {/* Toggle Button (Floating Icon) - Left Bottom */}
+      {/* Toggle Button (Floating Icon) - Right Bottom */}
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}

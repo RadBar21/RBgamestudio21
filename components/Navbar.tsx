@@ -27,34 +27,41 @@ const Navbar: FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <NavLink to="/" className="flex items-center gap-2">
-              <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">
-                RB Studio 21
+            <NavLink to="/" className="flex-shrink-0 flex items-center gap-3">
+              <img
+                src="/image/RBgamestudio.png"
+                alt="RB Game Studio 21 Logo"
+                className="h-10 w-auto object-contain" 
+              />
+              <span className="font-bold text-xl tracking-tight text-slate-900 hidden sm:block">
+                RB Game Studio <span className="text-blue-600">21</span>
               </span>
             </NavLink>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            {NAV_ITEMS.map((item) => (
-              <NavLink key={item.path} to={item.path} className={linkClass}>
-                {item.label[language]}
-              </NavLink>
-            ))}
+          <div className="hidden md:flex items-center">
+            <div className="flex items-center space-x-8">
+              {NAV_ITEMS.map((item) => (
+                <NavLink key={item.path} to={item.path} className={linkClass}>
+                  {item.label[language]}
+                </NavLink>
+              ))}
+            </div>
 
-            <div className="flex items-center gap-2 ml-4 border-l border-slate-200 pl-6">
+            <div className="flex items-center gap-2 border-l border-slate-200 pl-6 ml-8">
               <button
                 onClick={() => setLanguage('cs')}
-                className={`text-xs font-bold transition-colors ${
+                className={`text-sm font-medium transition-colors ${
                   language === 'cs' ? 'text-blue-600' : 'text-slate-400 hover:text-slate-600'
                 }`}
               >
                 CZ
               </button>
-              <span className="text-slate-300 text-xs">/</span>
+              <span className="text-slate-300">|</span>
               <button
                 onClick={() => setLanguage('en')}
-                className={`text-xs font-bold transition-colors ${
+                className={`text-sm font-medium transition-colors ${
                   language === 'en' ? 'text-blue-600' : 'text-slate-400 hover:text-slate-600'
                 }`}
               >
@@ -63,9 +70,9 @@ const Navbar: FC = () => {
             </div>
           </div>
 
-          {/* Mobile menu button */}
-          <div className="md:hidden flex items-center gap-4">
-            <div className="flex items-center gap-2 mr-2">
+          {/* Mobile menu button and language switcher */}
+          <div className="flex items-center md:hidden gap-4">
+            <div className="flex items-center gap-2">
               <button
                 onClick={() => setLanguage('cs')}
                 className={`text-sm font-medium ${
