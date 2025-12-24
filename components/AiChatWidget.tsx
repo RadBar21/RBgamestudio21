@@ -25,14 +25,14 @@ const AiChatWidget: FC = () => {
     scrollToBottom();
   }, [messages, isOpen]);
 
-  // Pomocná funkce pro bezpečné kódování UTF-8 textu do Base64 (pro odesílání)
+  // Pomocná funkce pro bezpečné kódování UTF-8 textu do Base64
   const b64EncodeUnicode = (str: string) => {
     return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (_match, p1) => {
       return String.fromCharCode(parseInt(p1, 16));
     }));
   };
 
-  // Pomocná funkce pro bezpečné dekódování UTF-8 textu z Base64 (pro příjem)
+  // Pomocná funkce pro bezpečné dekódování UTF-8 textu z Base64
   const b64DecodeUnicode = (str: string) => {
     return decodeURIComponent(Array.prototype.map.call(atob(str), (c: string) => {
       return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
@@ -64,13 +64,17 @@ const AiChatWidget: FC = () => {
       // 2. Zakódování celého požadavku do Base64
       const base64Payload = b64EncodeUnicode(JSON.stringify(rawPayload));
 
-      // 3. Odeslání na PHP proxy na Wedosu
+      // 3. Odeslání na PHP proxy jako FORMULÁŘ (x-www-form-urlencoded)
+      // Toto je klíčová změna pro obejití firewallu na LowCost hostingu
+      const formData = new URLSearchParams();
+      formData.append('p', base64Payload);
+
       const response = await fetch('https://www.spacecolony.eu/content.php', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: JSON.stringify({ payload: base64Payload })
+        body: formData.toString()
       });
 
       if (!response.ok) {
@@ -79,7 +83,7 @@ const AiChatWidget: FC = () => {
 
       const result = await response.json();
       
-      // 4. Dekódování odpovědi z Base64 (kterou nám poslal content.php v poli 'data')
+      // 4. Dekódování odpovědi z Base64
       const decodedJsonString = b64DecodeUnicode(result.data);
       const decodedResponse = JSON.parse(decodedJsonString);
       
@@ -119,7 +123,7 @@ const AiChatWidget: FC = () => {
           <div className="bg-blue-600 p-4 text-white flex justify-between items-center shadow-md">
             <div className="flex items-center gap-2">
               <div className="bg-white/20 p-2 rounded-full">
-                <Sparkles size={18} className="text-yellow-300" />
+                <Bot size={18} className="text-yellow-300" />
               </div>
               <div>
                 <h3 className="font-bold text-sm">RB Studio AI Assistant</h3>
