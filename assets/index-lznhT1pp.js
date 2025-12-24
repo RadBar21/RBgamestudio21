@@ -472,6 +472,10 @@ HLÁŠENÍ CHYB (BUG REPORT):
 ZAJÍMAVOSTI A OSTATNÍ INFO:
 - Délka tvorby aplikace: 1-3. měsíce do prvního vydání.
 - Odměna za testování: žádná
+- Pokud uživatel klepne na odkaz u hry, který ho přesměruje do Google play nebo App Store a uživatel tam nevidí hru, znamená to, že není evidován jako tester.
+- Testerem se uživatel stává ne ve chvíli vyplnění formuláře, ale ve chvíli kdy ho vývojář ručně přidá do seznamu testerů.
+- Vývojář přidá nebo odebere testera na základně jeho požadavku do 48 hodin.
+- Hráč bude o přidání nebo odebrání mezi testery informován Emailem.
 - Momentálně mám kolem 13 testerů, převážně z rodiny a přátel.
 - Pracuju na MacBook Pro s M4 čipem. 10 jader, 16GB paměť.
 - Dlouhodobé plány - vytvořit portfolio klasických jednoduchých her (Dáma, šachy, Piškvorky, atd.), pak dodělat Space Colony. A následně zkusit projekt jednoduché 3D hry.
