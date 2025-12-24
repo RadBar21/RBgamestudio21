@@ -11,10 +11,15 @@ const Contact: FC = () => {
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setStatus("submitting");
-    setResult(""); // Vyčistíme předchozí výsledky
     
-    const formData = new FormData(event.currentTarget);
+    // OPRAVA: Uložíme si referenci na formulář hned na začátku, 
+    // aby k ní asynchronní kód měl přístup i po dokončení fetch požadavku.
+    const form = event.currentTarget;
+    
+    setStatus("submitting");
+    setResult(""); 
+    
+    const formData = new FormData(form);
 
     // --- ZDE JE TVŮJ ACCESS KEY ---
     formData.append("access_key", "39bf4491-8123-463b-b7f3-18f12673907e"); 
@@ -30,7 +35,8 @@ const Contact: FC = () => {
 
       if (data.success) {
         setStatus("success");
-        (event.currentTarget as HTMLFormElement).reset();
+        // Použijeme uloženou referenci 'form' místo 'event.currentTarget'
+        form.reset();
       } else {
         console.error("Error", data);
         setResult(data.message);
@@ -38,153 +44,119 @@ const Contact: FC = () => {
       }
     } catch (error) {
       console.error("Error", error);
-      setResult("An unexpected error occurred.");
+      setResult("Nepodařilo se odeslat zprávu. Zkuste to prosím znovu.");
       setStatus("error");
     }
   };
 
   return (
-    <div className="bg-slate-50 min-h-screen py-12 md:py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Hlavička */}
+    <div className="min-h-screen pt-24 pb-16 bg-white relative">
+      {/* Decorative background elements */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <div className="absolute top-[-10%] left-[-5%] w-[30%] h-[40%] bg-blue-50 rounded-full blur-3xl opacity-50"></div>
+        <div className="absolute bottom-[-10%] right-[-5%] w-[30%] h-[40%] bg-blue-50 rounded-full blur-3xl opacity-50"></div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-16">
-          <h1 className="text-3xl font-extrabold text-slate-900 sm:text-4xl">
+          <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
             {t.contact.title}
           </h1>
-          <p className="mt-4 max-w-2xl text-xl text-slate-500 mx-auto">
+          <p className="text-xl text-slate-600 max-w-2xl mx-auto">
             {t.contact.subtitle}
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-          
-          {/* Levý sloupec: Kontaktní informace */}
+          {/* Contact Information */}
           <div className="space-y-8">
-            {/* Contact Info Card */}
-            <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
-              <h3 className="text-xl font-bold text-slate-900 mb-6">{t.contact.cardInfoTitle}</h3>
+            <div className="bg-slate-50 p-8 rounded-2xl border border-slate-100">
+              <h2 className="text-2xl font-bold text-slate-900 mb-6">{t.contact.infoTitle}</h2>
+              
               <div className="space-y-6">
-                
-                <div className="flex items-start">
-                  <div className="flex-shrink-0">
-                    <div className="flex items-center justify-center h-12 w-12 rounded-lg bg-blue-100 text-blue-600">
-                      <User className="h-6 w-6" />
-                    </div>
+                <div className="flex items-start gap-4">
+                  <div className="bg-blue-600 p-3 rounded-lg text-white">
+                    <Mail size={24} />
                   </div>
-                  <div className="ml-4">
-                    <p className="text-sm font-medium text-slate-500">{t.contact.role}</p>
-                    <p className="text-lg font-semibold text-slate-900">Radek Bartoníček</p>
+                  <div>
+                    <h3 className="font-bold text-slate-900">{t.contact.emailLabel}</h3>
+                    <p className="text-slate-600">radekbartonicek@rbgamestudio21.eu</p>
                   </div>
                 </div>
 
-                <div className="flex items-start">
-                  <div className="flex-shrink-0">
-                    <div className="flex items-center justify-center h-12 w-12 rounded-lg bg-blue-100 text-blue-600">
-                      <Mail className="h-6 w-6" />
-                    </div>
+                <div className="flex items-start gap-4">
+                  <div className="bg-blue-600 p-3 rounded-lg text-white">
+                    <MapPin size={24} />
                   </div>
-                  <div className="ml-4">
-                    <p className="text-sm font-medium text-slate-500">{t.contact.email}</p>
-                    <a href="mailto:RBgamestudio21@gmail.com" className="text-lg font-semibold text-slate-900 hover:text-blue-600 transition-colors">
-                      RBgamestudio21@gmail.com
-                    </a>
+                  <div>
+                    <h3 className="font-bold text-slate-900">{t.contact.locationLabel}</h3>
+                    <p className="text-slate-600">Česká republika, Jižní Čechy</p>
                   </div>
                 </div>
-
-                <div className="flex items-start">
-                  <div className="flex-shrink-0">
-                    <div className="flex items-center justify-center h-12 w-12 rounded-lg bg-blue-100 text-blue-600">
-                      <MapPin className="h-6 w-6" />
-                    </div>
-                  </div>
-                  <div className="ml-4">
-                    <p className="text-sm font-medium text-slate-500">{t.contact.location}</p>
-                    <p className="text-lg font-semibold text-slate-900">{t.contact.locationValue}</p>
-                  </div>
-                </div>
-
               </div>
             </div>
 
-            {/* Collaboration Card - Obnovené dekorativní kruhy */}
-            <div className="bg-blue-600 rounded-2xl shadow-lg p-8 text-white relative overflow-hidden">
-              {/* Dekorativní kruhy na pozadí */}
-              <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -mr-16 -mt-16"></div>
-              <div className="absolute bottom-0 left-0 w-48 h-48 bg-white opacity-5 rounded-full -ml-12 -mb-12"></div>
-              
-              <div className="relative z-10">
-                <h3 className="text-xl font-bold mb-4">{t.contact.cardCollabTitle}</h3>
-                <p className="text-blue-100 leading-relaxed">
-                  {t.contact.cardCollabDesc}
-                </p>
+            <div className="bg-blue-600 p-8 rounded-2xl text-white relative overflow-hidden group">
+              <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform">
+                <Send size={120} />
               </div>
+              <h2 className="text-2xl font-bold mb-4 relative z-10">{t.contact.collaborationTitle}</h2>
+              <p className="text-blue-100 mb-6 relative z-10">{t.contact.collaborationText}</p>
             </div>
           </div>
 
-          {/* Pravý sloupec: Kontaktní formulář */}
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
-            <h3 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
-              <MessageSquare className="h-5 w-5 text-blue-600" />
-              {t.contact.formTitle}
-            </h3>
-            
+          {/* Contact Form */}
+          <div className="bg-white p-8 rounded-2xl shadow-xl border border-slate-100">
             {status === 'success' ? (
-              <div className="flex flex-col items-center justify-center py-12 text-center animate-fade-in">
-                <div className="h-16 w-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-4">
-                  <CheckCircle className="h-8 w-8" />
+              <div className="text-center py-12 animate-in fade-in zoom-in duration-500">
+                <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-green-100 text-green-600 mb-6">
+                  <CheckCircle size={40} />
                 </div>
-                <h4 className="text-2xl font-bold text-slate-900 mb-2">{t.contact.successTitle}</h4>
-                <p className="text-slate-500 max-w-xs">{t.contact.successMessage}</p>
+                <h3 className="text-2xl font-bold text-slate-900 mb-2">{t.contact.successTitle}</h3>
+                <p className="text-slate-600 mb-8">{t.contact.successMessage}</p>
                 <button 
                   onClick={() => setStatus('idle')}
-                  className="mt-6 text-blue-600 hover:text-blue-800 font-medium text-sm"
+                  className="text-blue-600 font-semibold hover:text-blue-700 transition-colors"
                 >
-                  {t.contact.btnSendNew}
+                  {t.contact.sendAnother}
                 </button>
               </div>
             ) : (
               <form onSubmit={onSubmit} className="space-y-6">
-                {/* Honeypot field (anti-spam) - hidden */}
-                <input type="checkbox" name="botcheck" className="hidden" style={{ display: 'none' }} />
-
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-1">
-                    {t.contact.formName}
+                <div className="space-y-2">
+                  <label className="text-sm font-bold text-slate-700 flex items-center gap-2">
+                    <User size={16} /> {t.contact.labelName}
                   </label>
-                  <input 
-                    type="text" 
-                    name="name" 
-                    id="name"
-                    required 
+                  <input
+                    type="text"
+                    name="name"
+                    required
                     placeholder={t.contact.placeholderName}
                     className="w-full rounded-lg border-slate-200 border px-4 py-2.5 text-slate-900 focus:border-blue-500 focus:ring-blue-500 focus:outline-none transition-all"
                   />
                 </div>
 
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1">
-                    {t.contact.formEmail}
+                <div className="space-y-2">
+                  <label className="text-sm font-bold text-slate-700 flex items-center gap-2">
+                    <Mail size={16} /> {t.contact.labelEmail}
                   </label>
-                  <input 
-                    type="email" 
-                    name="email" 
-                    id="email"
-                    required 
+                  <input
+                    type="email"
+                    name="email"
+                    required
                     placeholder={t.contact.placeholderEmail}
                     className="w-full rounded-lg border-slate-200 border px-4 py-2.5 text-slate-900 focus:border-blue-500 focus:ring-blue-500 focus:outline-none transition-all"
                   />
                 </div>
 
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-slate-700 mb-1">
-                    {t.contact.formMessage}
+                <div className="space-y-2">
+                  <label className="text-sm font-bold text-slate-700 flex items-center gap-2">
+                    <MessageSquare size={16} /> {t.contact.labelMessage}
                   </label>
-                  <textarea 
-                    name="message" 
-                    id="message"
-                    required 
-                    rows={4}
+                  <textarea
+                    name="message"
+                    required
+                    rows={5}
                     placeholder={t.contact.placeholderMessage}
                     className="w-full rounded-lg border-slate-200 border px-4 py-2.5 text-slate-900 focus:border-blue-500 focus:ring-blue-500 focus:outline-none transition-all resize-none"
                   ></textarea>
@@ -215,7 +187,6 @@ const Contact: FC = () => {
               </form>
             )}
           </div>
-
         </div>
       </div>
     </div>
