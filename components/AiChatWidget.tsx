@@ -1,12 +1,7 @@
 import { useState, useRef, useEffect, FC, KeyboardEvent } from 'react';
-import { GoogleGenerativeAI } from '@google/generative-ai';
 import { MessageCircle, X, Send, Bot, User, Loader2, Sparkles } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { AI_SYSTEM_PROMPT } from '../ai-knowledge';
-
-// Inicializace Gemini API
-const API_KEY = import.meta.env.VITE_GEMINI_API_KEY || ''; 
-const genAI = new GoogleGenerativeAI(API_KEY);
 
 interface Message {
   role: 'user' | 'model';
@@ -31,7 +26,7 @@ const AiChatWidget: FC = () => {
   }, [messages, isOpen]);
 
   const handleSend = async () => {
-    if (!input.trim() || !API_KEY) return;
+    if (!input.trim()) return;
 
     const userMessage = input;
     setInput('');
@@ -39,35 +34,55 @@ const AiChatWidget: FC = () => {
     setIsLoading(true);
 
     try {
-      // AKTUALIZACE: Přechod na nejnovější a nejúspornější model Gemini 2.5 Flash
-      const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
-      
-      const chat = model.startChat({
-        history: [
-          {
-            role: 'user',
-            parts: [{ text: AI_SYSTEM_PROMPT }],
-          },
-          {
-            role: 'model',
-            parts: [{ text: 'Rozumím. Jsem připraven odpovídat jako asistent RB Game Studia 21.' }],
-          },
-          ...messages.slice(-10).map(msg => ({
-            role: msg.role,
-            parts: [{ text: msg.text }]
-          }))
-        ],
+      // Volání vašeho zabezpečeného PHP proxy na Wedosu
+      const response = await fetch('https://www.spacecolony.eu/api/RBgamestudio21/gemini-proxy.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          contents: [
+            {
+              role: 'user',
+              parts: [{ text: AI_SYSTEM_PROMPT }],
+            },
+            {
+              role: 'model',
+              parts: [{ text: 'Rozumím. Jsem připraven odpovídat jako asistent RB Game Studia 21.' }],
+            },
+            // Historie posledních 10 zpráv
+            ...messages.slice(-10).map(msg => ({
+              role: msg.role === 'user' ? 'user' : 'model',
+              parts: [{ text: msg.text }]
+            })),
+            // Aktuální zpráva
+            {
+              role: 'user',
+              parts: [{ text: userMessage }]
+            }
+          ]
+        })
       });
 
-      const result = await chat.sendMessage(userMessage);
-      const response = result.response.text();
+      if (!response.ok) {
+        throw new Error('Chyba komunikace s proxy serverem');
+      }
 
-      setMessages(prev => [...prev, { role: 'model', text: response }]);
+      const data = await response.json();
+      
+      // Získání textu odpovědi z formátu Gemini API
+      if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
+        const aiResponse = data.candidates[0].content.parts[0].text;
+        setMessages(prev => [...prev, { role: 'model', text: aiResponse }]);
+      } else {
+        throw new Error('Neplatný formát odpovědi');
+      }
+
     } catch (error) {
       console.error('Chyba AI:', error);
       setMessages(prev => [...prev, { 
         role: 'model', 
-        text: 'Omlouvám se, spojení s AI se nezdařilo. Model Gemini 2.5 Flash je momentálně vytížen. Zkuste to prosím za chvíli.' 
+        text: 'Omlouvám se, momentálně se nedaří navázat spojení se serverem. Zkuste to prosím za chvíli.' 
       }]);
     } finally {
       setIsLoading(false);
@@ -80,11 +95,6 @@ const AiChatWidget: FC = () => {
       handleSend();
     }
   };
-
-  if (!API_KEY) {
-    console.warn('AI Chat: Chybí VITE_GEMINI_API_KEY');
-    return null;
-  }
 
   return (
     <div className="fixed bottom-4 right-4 z-50 flex flex-col items-end gap-4 font-sans">
@@ -172,7 +182,7 @@ const AiChatWidget: FC = () => {
               </button>
             </div>
             <div className="text-center mt-2">
-               <p className="text-[10px] text-slate-400">Powered by Google Gemini AI</p>
+               <p className="text-[10px] text-slate-400">Powered by RB Studio AI Proxy</p>
             </div>
           </div>
 
