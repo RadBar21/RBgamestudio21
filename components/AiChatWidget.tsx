@@ -25,16 +25,21 @@ const AiChatWidget: FC = () => {
     scrollToBottom();
   }, [messages, isOpen]);
 
-  // Pomocná funkce pro bezpečné kódování UTF-8 textu do Base64
-  const b64EncodeUnicode = (str: string) => {
-    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (_match, p1) => {
+  // Pomocné funkce pro Stealth komunikaci
+  const stealthEncode = (str: string) => {
+    // 1. UTF-8 -> Base64
+    const b64 = btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (_match, p1) => {
       return String.fromCharCode(parseInt(p1, 16));
     }));
+    // 2. Otočení řetězce pozpátku (Zrcadlo)
+    return b64.split('').reverse().join('');
   };
 
-  // Pomocná funkce pro bezpečné dekódování UTF-8 textu z Base64
-  const b64DecodeUnicode = (str: string) => {
-    return decodeURIComponent(Array.prototype.map.call(atob(str), (c: string) => {
+  const stealthDecode = (str: string) => {
+    // 1. Otočení zpět
+    const reversed = str.trim().split('').reverse().join('');
+    // 2. Base64 -> UTF-8
+    return decodeURIComponent(Array.prototype.map.call(atob(reversed), (c: string) => {
       return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
     }).join(''));
   };
@@ -48,7 +53,7 @@ const AiChatWidget: FC = () => {
     setIsLoading(true);
 
     try {
-      // 1. Příprava dat pro Gemini
+      // 1. Příprava dat
       const rawPayload = {
         contents: [
           { role: 'user', parts: [{ text: AI_SYSTEM_PROMPT }] },
@@ -61,44 +66,41 @@ const AiChatWidget: FC = () => {
         ]
       };
 
-      // 2. Zakódování celého požadavku do Base64
-      const base64Payload = b64EncodeUnicode(JSON.stringify(rawPayload));
+      // 2. Stealth kódování (Base64 + Reverse)
+      const encodedData = stealthEncode(JSON.stringify(rawPayload));
 
-      // 3. Odeslání na PHP proxy jako FORMULÁŘ (x-www-form-urlencoded)
-      // Toto je klíčová změna pro obejití firewallu na LowCost hostingu
-      const formData = new URLSearchParams();
-      formData.append('p', base64Payload);
-
+      // 3. Odeslání jako text/plain (méně hlídané než JSON)
       const response = await fetch('https://www.spacecolony.eu/content.php', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Type': 'text/plain',
         },
-        body: formData.toString()
+        body: encodedData
       });
 
       if (!response.ok) {
-        throw new Error('Chyba komunikace se serverem');
+        throw new Error('Chyba serveru');
       }
 
-      const result = await response.json();
+      // 4. Přijetí obráceného textu z PHP
+      const stealthResponse = await response.text();
       
-      // 4. Dekódování odpovědi z Base64
-      const decodedJsonString = b64DecodeUnicode(result.data);
+      // 5. Stealth dekódování (Reverse + Base64)
+      const decodedJsonString = stealthDecode(stealthResponse);
       const decodedResponse = JSON.parse(decodedJsonString);
       
       if (decodedResponse.candidates && decodedResponse.candidates[0]?.content?.parts[0]?.text) {
         const aiResponse = decodedResponse.candidates[0].content.parts[0].text;
         setMessages(prev => [...prev, { role: 'model', text: aiResponse }]);
       } else {
-        throw new Error('Neplatná struktura odpovědi');
+        throw new Error('Neplatná data');
       }
 
     } catch (error) {
       console.error('Chyba AI:', error);
       setMessages(prev => [...prev, { 
         role: 'model', 
-        text: 'Omlouvám se, momentálně se nedaří navázat spojení se serverem. Zkuste to prosím za chvíli.' 
+        text: 'Omlouvám se, spojení bylo přerušeno firewallem. Zkuste to prosím za okamžik.' 
       }]);
     } finally {
       setIsLoading(false);
@@ -115,15 +117,13 @@ const AiChatWidget: FC = () => {
   return (
     <div className="fixed bottom-4 right-4 z-50 flex flex-col items-end gap-4 font-sans">
       
-      {/* Chat Window */}
       {isOpen && (
         <div className="bg-white w-[350px] h-[500px] rounded-2xl shadow-2xl flex flex-col border border-slate-200 overflow-hidden animate-in slide-in-from-bottom-5 duration-300">
           
-          {/* Header */}
           <div className="bg-blue-600 p-4 text-white flex justify-between items-center shadow-md">
             <div className="flex items-center gap-2">
               <div className="bg-white/20 p-2 rounded-full">
-                <Bot size={18} className="text-yellow-300" />
+                <Sparkles size={18} className="text-yellow-300" />
               </div>
               <div>
                 <h3 className="font-bold text-sm">RB Studio AI Assistant</h3>
@@ -141,7 +141,6 @@ const AiChatWidget: FC = () => {
             </button>
           </div>
 
-          {/* Messages Area */}
           <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50">
             {messages.map((msg, idx) => (
               <div 
@@ -177,7 +176,6 @@ const AiChatWidget: FC = () => {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Input Area */}
           <div className="p-3 bg-white border-t border-slate-100">
             <div className="flex gap-2 items-center bg-slate-50 border border-slate-200 rounded-full px-4 py-2 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all">
               <input
@@ -202,7 +200,6 @@ const AiChatWidget: FC = () => {
         </div>
       )}
 
-      {/* Toggle Button */}
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
