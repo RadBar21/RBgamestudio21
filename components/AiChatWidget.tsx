@@ -11,7 +11,7 @@ interface Message {
 const AiChatWidget: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'model', text: 'Ahoj! 👋 Jsem virtuální asistent RB Game Studia. Můžu ti poradit s hrami, testováním nebo kontakty. Na co se chceš zeptat?' }
+    { role: 'model', text: 'Ahoj! 👋 Jsem virtuální asistent RB Game Studia. Na co se chceš zeptat?' }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -34,48 +34,36 @@ const AiChatWidget: FC = () => {
     setIsLoading(true);
 
     try {
-      // Volání vašeho zabezpečeného PHP proxy na Wedosu
-      const response = await fetch('https://www.spacecolony.eu/api/RBgamestudio21/gemini-proxy.php', {
+      // Volání souboru přímo v rootu www pro maximální kompatibilitu s Wedos LowCost
+      const response = await fetch('https://www.spacecolony.eu/content.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           contents: [
-            {
-              role: 'user',
-              parts: [{ text: AI_SYSTEM_PROMPT }],
-            },
-            {
-              role: 'model',
-              parts: [{ text: 'Rozumím. Jsem připraven odpovídat jako asistent RB Game Studia 21.' }],
-            },
-            // Historie posledních 10 zpráv
-            ...messages.slice(-10).map(msg => ({
+            { role: 'user', parts: [{ text: AI_SYSTEM_PROMPT }] },
+            { role: 'model', parts: [{ text: 'Rozumím.' }] },
+            ...messages.slice(-6).map(msg => ({
               role: msg.role === 'user' ? 'user' : 'model',
               parts: [{ text: msg.text }]
             })),
-            // Aktuální zpráva
-            {
-              role: 'user',
-              parts: [{ text: userMessage }]
-            }
+            { role: 'user', parts: [{ text: userMessage }] }
           ]
         })
       });
 
       if (!response.ok) {
-        throw new Error('Chyba komunikace s proxy serverem');
+        throw new Error('Chyba komunikace se serverem');
       }
 
       const data = await response.json();
       
-      // Získání textu odpovědi z formátu Gemini API
       if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
         const aiResponse = data.candidates[0].content.parts[0].text;
         setMessages(prev => [...prev, { role: 'model', text: aiResponse }]);
       } else {
-        throw new Error('Neplatný formát odpovědi');
+        throw new Error('Neplatná odpověď');
       }
 
     } catch (error) {
@@ -181,9 +169,6 @@ const AiChatWidget: FC = () => {
                 <Send size={18} />
               </button>
             </div>
-            <div className="text-center mt-2">
-               <p className="text-[10px] text-slate-400">Powered by RB Studio AI Proxy</p>
-            </div>
           </div>
 
         </div>
@@ -195,13 +180,7 @@ const AiChatWidget: FC = () => {
           onClick={() => setIsOpen(true)}
           className="group flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:scale-105 active:scale-95"
         >
-          <div className="relative">
-            <MessageCircle size={28} />
-            <span className="absolute -top-1 -right-1 flex h-3 w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-yellow-400"></span>
-            </span>
-          </div>
+          <MessageCircle size={28} />
           <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap font-bold">
             AI Chat
           </span>
