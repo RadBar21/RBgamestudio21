@@ -25,6 +25,20 @@ const AiChatWidget: FC = () => {
     scrollToBottom();
   }, [messages, isOpen]);
 
+  // Pomocná funkce pro bezpečné kódování UTF-8 textu do Base64 (pro odesílání)
+  const b64EncodeUnicode = (str: string) => {
+    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (_match, p1) => {
+      return String.fromCharCode(parseInt(p1, 16));
+    }));
+  };
+
+  // Pomocná funkce pro bezpečné dekódování UTF-8 textu z Base64 (pro příjem)
+  const b64DecodeUnicode = (str: string) => {
+    return decodeURIComponent(Array.prototype.map.call(atob(str), (c: string) => {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+  };
+
   const handleSend = async () => {
     if (!input.trim()) return;
 
@@ -34,36 +48,46 @@ const AiChatWidget: FC = () => {
     setIsLoading(true);
 
     try {
-      // Volání souboru přímo v rootu www pro maximální kompatibilitu s Wedos LowCost
+      // 1. Příprava dat pro Gemini
+      const rawPayload = {
+        contents: [
+          { role: 'user', parts: [{ text: AI_SYSTEM_PROMPT }] },
+          { role: 'model', parts: [{ text: 'Rozumím.' }] },
+          ...messages.slice(-6).map(msg => ({
+            role: msg.role === 'user' ? 'user' : 'model',
+            parts: [{ text: msg.text }]
+          })),
+          { role: 'user', parts: [{ text: userMessage }] }
+        ]
+      };
+
+      // 2. Zakódování celého požadavku do Base64
+      const base64Payload = b64EncodeUnicode(JSON.stringify(rawPayload));
+
+      // 3. Odeslání na PHP proxy na Wedosu
       const response = await fetch('https://www.spacecolony.eu/content.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          contents: [
-            { role: 'user', parts: [{ text: AI_SYSTEM_PROMPT }] },
-            { role: 'model', parts: [{ text: 'Rozumím.' }] },
-            ...messages.slice(-6).map(msg => ({
-              role: msg.role === 'user' ? 'user' : 'model',
-              parts: [{ text: msg.text }]
-            })),
-            { role: 'user', parts: [{ text: userMessage }] }
-          ]
-        })
+        body: JSON.stringify({ payload: base64Payload })
       });
 
       if (!response.ok) {
         throw new Error('Chyba komunikace se serverem');
       }
 
-      const data = await response.json();
+      const result = await response.json();
       
-      if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
-        const aiResponse = data.candidates[0].content.parts[0].text;
+      // 4. Dekódování odpovědi z Base64 (kterou nám poslal content.php v poli 'data')
+      const decodedJsonString = b64DecodeUnicode(result.data);
+      const decodedResponse = JSON.parse(decodedJsonString);
+      
+      if (decodedResponse.candidates && decodedResponse.candidates[0]?.content?.parts[0]?.text) {
+        const aiResponse = decodedResponse.candidates[0].content.parts[0].text;
         setMessages(prev => [...prev, { role: 'model', text: aiResponse }]);
       } else {
-        throw new Error('Neplatná odpověď');
+        throw new Error('Neplatná struktura odpovědi');
       }
 
     } catch (error) {
@@ -180,7 +204,13 @@ const AiChatWidget: FC = () => {
           onClick={() => setIsOpen(true)}
           className="group flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:scale-105 active:scale-95"
         >
-          <MessageCircle size={28} />
+          <div className="relative">
+            <MessageCircle size={28} />
+            <span className="absolute -top-1 -right-1 flex h-3 w-3">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-yellow-400"></span>
+            </span>
+          </div>
           <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap font-bold">
             AI Chat
           </span>
