@@ -1,22 +1,14 @@
-import path from 'path';
-import { defineConfig, loadEnv } from 'vite';
-import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
-export default defineConfig(({ mode }) => {
-    // loadEnv načte proměnné prostředí ze souboru .env
-    const env = loadEnv(mode, '.', '');
-    
-    return {
-      base: '/',  // <--- TOTO JE NEJDŮLEŽITĚJŠÍ (musí být jen lomítko)
-      server: {
-        port: 3000,
-        host: '0.0.0.0',
-      },
-      plugins: [react()],
-      resolve: {
-        alias: {
-          '@': path.resolve(__dirname, '.'),
-        }
-      }
-    };
-});
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [react()],
+  // Změna base na './' zajistí, že cesty k souborům budou relativní 
+  // a web bude fungovat na Vercelu i jakékoliv jiné doméně.
+  base: './',
+  build: {
+    // Vercel očekává výstup v dist (což je výchozí), ale pro jistotu to definujeme
+    outDir: 'dist',
+  }
+})
